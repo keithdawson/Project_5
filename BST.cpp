@@ -4,20 +4,21 @@
 #include <cstdlib>
 using namespace std;
 
+struct node
+{
+	node* left;
+	node* right;
+	int data;
+};
+
 class BST
 {
 private:
-	node * sortedArrayToBST(int a[], int, int);
+	node* sortedArrayToBST(int a[], int, int);
 	node* root = new node;
-	node * newNode(int);
+	node* newNode(int);
 	bool isEmpty() const { return root==NULL; }
 public:
-	struct node
-	{
-		node* left;
-		node* right;
-		int data;
-	};
 	BST()
 	{
 		root = NULL;
@@ -40,7 +41,6 @@ node * BST::newNode(int data) {
 	tNode->data = data;
 	tNode->left = NULL;
 	tNode->right = NULL;
-
 	return tNode;
 }
 
@@ -50,15 +50,13 @@ node * BST::sortedArrayToBST(int a[], int start, int end){
 	int mid = (start + end) / 2;
 	node * localRoot = newNode(a[mid]);
 	localRoot->left = sortedArrayToBST(a, start, mid-1);
-
 	localRoot->right = sortedArrayToBST(a, mid+1, end);
-
 	return localRoot;
 }
 
 BST::BST(int a[], int len) {
 	int start = 0;
-	root = sortedArrayToBST(a, start, len);
+	root = sortedArrayToBST(a, start, len-1);
 }
 
 void BST::insert(int d)
@@ -426,7 +424,7 @@ void BST::inorder()
 	if(p != NULL)
 	{
 		if(p->left) inorder(p->left);
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 		if(p->right) inorder(p->right);
 	}
 	else return;
@@ -437,7 +435,7 @@ void BST::inorder(node* p)
 	if(p != NULL)
 	{
 		if(p->left) inorder(p->left);
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 		if(p->right) inorder(p->right);
 	}
 	else return;
@@ -448,22 +446,24 @@ void BST::preorder()
 	node * p = root;
 	if(p != NULL)
 	{
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 		if(p->left) preorder(p->left);
 		if(p->right) preorder(p->right);
 	}
 	else return;
+	return;
 }
 
 void BST::preorder(node* p)
 {
 	if(p != NULL)
 	{
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 		if(p->left) preorder(p->left);
 		if(p->right) preorder(p->right);
 	}
 	else return;
+	return;
 }
 
 void BST::postorder()
@@ -473,9 +473,10 @@ void BST::postorder()
 	{
 		if(p->left) postorder(p->left);
 		if(p->right) postorder(p->right);
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 	}
 	else return;
+	return;
 }
 
 void BST::postorder(node* p)
@@ -484,7 +485,8 @@ void BST::postorder(node* p)
 	{
 		if(p->left) postorder(p->left);
 		if(p->right) postorder(p->right);
-		cout<<" "<<p->data<<" ";
+		cout<<p->data<<" ";
 	}
 	else return;
+	return;
 }
