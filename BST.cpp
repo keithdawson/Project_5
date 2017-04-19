@@ -18,6 +18,9 @@ private:
 	node* root = new node;
 	node* newNode(int);
 	bool isEmpty() const { return root==NULL; }
+	void inorderTrav(node*);
+	void preorderTrav(node*);
+	void postorderTrav(node*);
 public:
 	BST()
 	{
@@ -47,7 +50,7 @@ node * BST::newNode(int data) {
 node * BST::sortedArrayToBST(int a[], int start, int end){
 	if (start > end)
 		return NULL;
-	int mid = (start + end) / 2;
+	int mid = (start + end + 1) / 2;
 	node * localRoot = newNode(a[mid]);
 	localRoot->left = sortedArrayToBST(a, start, mid-1);
 	localRoot->right = sortedArrayToBST(a, mid+1, end);
@@ -173,8 +176,8 @@ bool BST::remove(int d)
 	}
 
 
-	//Node with 2 children and c == s
-	// replace node with smallest value in right subtree
+	//Node with 2 children and c == p
+	// replace node with smallest value in left subtree
 
 	if (curr->left != NULL && curr->right != NULL)
 	{
@@ -186,10 +189,10 @@ bool BST::remove(int d)
 			delete chkl;
 			curr->left = NULL;
 		}
-		else // right child has children
+		else // left child has children
 		{
-			//if the node's right child has a left child
-			// Move all the way down left to locate smallest element
+			//if the node's left child has a right child
+			// Move all the way down right to locate smallest element
 
 			if((curr->left)->right != NULL)
 			{
@@ -203,8 +206,9 @@ bool BST::remove(int d)
 					rcurr = rcurr->right;
 				}
 				curr->data = rcurr->data;
+				if (rcurr->left != NULL) rcurrp->right = rcurr->left;
+				else rcurrp->right = NULL;
 				delete rcurr;
-				rcurrp->right = NULL;
 			}
 			else
 			{
@@ -332,8 +336,9 @@ bool BST::remove(int d, char c)
 					lcurr = lcurr->left;
 				}
 				curr->data = lcurr->data;
+				if (lcurr->right != NULL) lcurrp->left = lcurr->right;
+				else lcurrp->left = NULL;
 				delete lcurr;
-				lcurrp->left = NULL;
 			}
 			else
 			{
@@ -374,8 +379,9 @@ bool BST::remove(int d, char c)
 					rcurr = rcurr->right;
 				}
 				curr->data = rcurr->data;
+				if (rcurr->left != NULL) rcurrp->right = rcurr->left;
+				else rcurrp->right = NULL;
 				delete rcurr;
-				rcurrp->right = NULL;
 			}
 			else
 			{
@@ -418,27 +424,40 @@ node* BST::search(int val){
 	}
 }
 
+void BST::inorderTrav(node* p)
+{
+	if(p != NULL)
+	{
+		if(p->left) inorderTrav(p->left);
+		cout<<p->data<<" ";
+		if(p->right) inorderTrav(p->right);
+	}
+	else return;
+}
+
 void BST::inorder()
 {
 	node * p = root;
 	if(p != NULL)
 	{
-		if(p->left) inorder(p->left);
+		if(p->left) inorderTrav(p->left);
 		cout<<p->data<<" ";
-		if(p->right) inorder(p->right);
+		if(p->right) inorderTrav(p->right);
 	}
-	else return;
+	cout<<endl;
+	return;
 }
 
 void BST::inorder(node* p)
 {
 	if(p != NULL)
 	{
-		if(p->left) inorder(p->left);
+		if(p->left) inorderTrav(p->left);
 		cout<<p->data<<" ";
-		if(p->right) inorder(p->right);
+		if(p->right) inorderTrav(p->right);
 	}
-	else return;
+	cout<<endl;
+	return;
 }
 
 void BST::preorder()
@@ -447,11 +466,22 @@ void BST::preorder()
 	if(p != NULL)
 	{
 		cout<<p->data<<" ";
-		if(p->left) preorder(p->left);
-		if(p->right) preorder(p->right);
+		if(p->left) preorderTrav(p->left);
+		if(p->right) preorderTrav(p->right);
+	}
+	cout<<endl;
+	return;
+}
+
+void BST::preorderTrav(node* p)
+{
+	if(p != NULL)
+	{
+		cout<<p->data<<" ";
+		if(p->left) preorderTrav(p->left);
+		if(p->right) preorderTrav(p->right);
 	}
 	else return;
-	return;
 }
 
 void BST::preorder(node* p)
@@ -459,10 +489,10 @@ void BST::preorder(node* p)
 	if(p != NULL)
 	{
 		cout<<p->data<<" ";
-		if(p->left) preorder(p->left);
-		if(p->right) preorder(p->right);
+		if(p->left) preorderTrav(p->left);
+		if(p->right) preorderTrav(p->right);
 	}
-	else return;
+	cout<<endl;
 	return;
 }
 
@@ -471,22 +501,33 @@ void BST::postorder()
 	node * p = root;
 	if(p != NULL)
 	{
-		if(p->left) postorder(p->left);
-		if(p->right) postorder(p->right);
+		if(p->left) postorderTrav(p->left);
+		if(p->right) postorderTrav(p->right);
+		cout<<p->data<<" ";
+	}
+	cout<<endl;
+	return;
+}
+
+void BST::postorderTrav(node* p)
+{
+	if(p != NULL)
+	{
+		if(p->left) postorderTrav(p->left);
+		if(p->right) postorderTrav(p->right);
 		cout<<p->data<<" ";
 	}
 	else return;
-	return;
 }
 
 void BST::postorder(node* p)
 {
 	if(p != NULL)
 	{
-		if(p->left) postorder(p->left);
-		if(p->right) postorder(p->right);
+		if(p->left) postorderTrav(p->left);
+		if(p->right) postorderTrav(p->right);
 		cout<<p->data<<" ";
 	}
-	else return;
+	cout<<endl;
 	return;
 }

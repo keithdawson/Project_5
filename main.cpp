@@ -10,17 +10,17 @@ int main() {
 	T.preorder();
 	T.insert(11);
 	T.insert(10);
-//	T.inorder();
+	T.inorder();
 	node *t = T.search(11);
-//	T.preorder(t);
+	T.preorder(t);
 	T.remove(5);
-//	T.preorder();
+	T.preorder();
 	T.remove(3);
-//	T.preorder();
+	T.preorder();
 	T.remove(4,'s');
-//	T.preorder();
+	T.preorder();
 	T.remove(11);
-//	T.preorder();
+	T.preorder();
 /*
 	cout << endl << "Heap Examples" << endl;
 
