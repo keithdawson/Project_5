@@ -4,7 +4,7 @@
 using namespace std;
 int main() {
 	int a[10];
-	for (int i=0;i<10;i++) a[i]=i;
+	for (int i=0;i<10; i++) a[i]=i;
 	BST T(a,10);
 	T.inorder();
 	T.preorder();
