@@ -31,11 +31,11 @@ int main() {
 	//h.out();
 	for (int i=0;i<10;i++) a[i]=10-i;
 	Heap h2(a,10);
-	//h2.out();
+	h2.out();
 	//h2.extract();
 	//h2.out();
 	Heap h3(a,10,"max");
-	//h3.out();
+	h3.out();
 	//cout << h3.extract() << endl;
 	//h3.out();
 }

@@ -7,11 +7,14 @@ using namespace std;
 class Heap
 {
 private:
-	void BubbleDown(int index);
-	void BubbleUp(int index);
+	void BubbleDownMin(int index);
+	void BubbleUpMin(int index);
+	void BubbleDownMax(int index);
+	void BubbleUpMax(int index);
 	void minHeapify();
 	void maxHeapify();
 	MyDynamicArray dynA;
+	int maxormin = 1; //min = 1 max = 0
 public:
 	Heap(int a[], int, string);
 	Heap(int a[], int);
@@ -32,7 +35,7 @@ Heap::Heap(int* array, int length)
 Heap::Heap(int* array, int length, string s)
 {
 	std::string str(s);
-	if (str.compare("max")){
+	if (str.compare("max") == 0){
 		for(int i = 0; i < length; ++i)
 		{
 			dynA.add(array[i]);
@@ -57,7 +60,7 @@ void Heap::minHeapify()
 	int length = dynA.length();
 	for(int i=length-1; i>=0; --i)
 	{
-		BubbleDown(i);
+		BubbleDownMin(i);
 	}
 }
 
@@ -66,11 +69,11 @@ void Heap::maxHeapify()
 	int length = dynA.length();
 	for(int i=length-1; i>=0; --i)
 	{
-		BubbleUp(i);
+		BubbleDownMax(i);
 	}
 }
 
-void Heap::BubbleDown(int index)
+void Heap::BubbleDownMin(int index)
 {
 	int length = dynA.length();
 	int leftChildIndex = 2*index + 1;
@@ -97,11 +100,59 @@ void Heap::BubbleDown(int index)
 		int temp = dynA[index];
 		dynA[index] = dynA[minIndex];
 		dynA[minIndex] = temp;
-		BubbleDown(minIndex);
+		BubbleDownMin(minIndex);
 	}
 }
 
-void Heap::BubbleUp(int index)
+void Heap::BubbleDownMax(int index)
+{
+	int length = dynA.length();
+	int leftChildIndex = 2*index + 1;
+	int rightChildIndex = 2*index + 2;
+
+	if(leftChildIndex >= length)
+		return; //index is a leaf
+
+	int minIndex = index;
+
+	if(dynA[index] < dynA[leftChildIndex])
+	{
+		minIndex = leftChildIndex;
+	}
+
+	if((rightChildIndex < length) && (dynA[minIndex] < dynA[rightChildIndex]))
+	{
+		minIndex = rightChildIndex;
+	}
+
+	if(minIndex != index)
+	{
+		//need to swap
+		int temp = dynA[index];
+		dynA[index] = dynA[minIndex];
+		dynA[minIndex] = temp;
+		BubbleDownMin(minIndex);
+	}
+}
+
+
+void Heap::BubbleUpMax(int index)
+{
+	if(index == 0)
+		return;
+
+	int parentIndex = (index-1)/2;
+
+	if(dynA[parentIndex] < dynA[index])
+	{
+		int temp = dynA[parentIndex];
+		dynA[parentIndex] = dynA[index];
+		dynA[index] = temp;
+		BubbleUpMin(parentIndex);
+	}
+}
+
+void Heap::BubbleUpMin(int index)
 {
 	if(index == 0)
 		return;
@@ -113,20 +164,21 @@ void Heap::BubbleUp(int index)
 		int temp = dynA[parentIndex];
 		dynA[parentIndex] = dynA[index];
 		dynA[index] = temp;
-		BubbleUp(parentIndex);
+		BubbleUpMin(parentIndex);
 	}
 }
 
 void Heap::insert(int newValue)
 {
 	int length = dynA.length();
-	dynA[length] = newValue;
+	dynA.add(newValue);
 
-	BubbleUp(length);
+	BubbleUpMin(length);
 }
 
 void Heap::out(){
 	for (int i=0; i < dynA.length(); i++) {
-		cout<<dynA[i];
+		cout<<dynA[i]<<' ';
 	}
+	cout<<endl;
 }
