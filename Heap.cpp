@@ -67,6 +67,7 @@ void Heap::minHeapify()
 void Heap::maxHeapify()
 {
 	int length = dynA.length();
+	maxormin = 0;
 	for(int i=length-1; i>=0; --i)
 	{
 		BubbleDownMax(i);
@@ -173,7 +174,10 @@ void Heap::insert(int newValue)
 	int length = dynA.length();
 	dynA.add(newValue);
 
-	BubbleUpMin(length);
+	if (maxormin == 1) {
+		BubbleUpMin(length);
+	}
+	else BubbleUpMax(length);
 }
 
 void Heap::out(){
@@ -182,3 +186,71 @@ void Heap::out(){
 	}
 	cout<<endl;
 }
+
+int Heap::extract()
+{
+	int length = dynA.length();
+	int returner = dynA[0];
+	if(length == 0)
+	{
+		return 0;
+	}
+
+	dynA[0] = dynA[length-1];
+	if (maxormin == 1){
+		dynA.del();
+		BubbleDownMin(0);
+	}
+	else {
+		dynA.del();
+		BubbleDownMax(0);
+	}
+	return returner;
+}
+
+class MyDynamicArray {
+private:
+	int size, limit, error, *a;
+public:
+	MyDynamicArray() {
+		a = new int[limit = 2];
+		size = error = 0;
+	}
+	MyDynamicArray(int s) {
+		a = new int[limit = size = s];
+		error = 0;
+	}
+	~MyDynamicArray() {
+		delete a;
+	}
+	int& operator[](int i){
+		if (i>=size || i < 0) {return error;}
+		return *(a+i);
+	}
+	void add(int v) {
+		if(size == limit) {
+			int *temp = new int[limit *= 2];
+			//cout << "Doubling to : " << limit << endl;
+			for (int i = 0; i<size; i++)  temp[i]=a[i];
+			delete a;
+			a = temp;
+		}
+		a[size++] = v;
+	}
+	void del() {
+		size--;
+		if (size <= limit/4) {
+			int *temp = new int[limit /= 2];
+			//cout << "Reducing to : "<< limit << endl;
+			for (int i = 0; i<size; i++)  temp[i]=a[i];
+			delete a;
+			a = temp;
+		}
+	}
+	int length() { return size;}
+	void clear() {
+		delete a;
+		a = new int[limit=2];
+		size = 0;
+	}
+};

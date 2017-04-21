@@ -1,8 +1,3 @@
-//This is the Heap program by Blake Mizzell
-
-#include <vector>
-using namespace std;
-
 class MyDynamicArray {
 private:
 	int size, limit, error, *a;

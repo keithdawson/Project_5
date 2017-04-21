@@ -27,15 +27,15 @@ int main() {
 	Heap h;
 	h.insert(5); h.insert(10); h.insert(3);
 	h.out();
-	//cout << h.extract() << endl;
-	//h.out();
+	cout << h.extract() << endl;
+	h.out();
 	for (int i=0;i<10;i++) a[i]=10-i;
 	Heap h2(a,10);
 	h2.out();
-	//h2.extract();
-	//h2.out();
+	h2.extract();
+	h2.out();
 	Heap h3(a,10,"max");
 	h3.out();
-	//cout << h3.extract() << endl;
-	//h3.out();
+	cout << h3.extract() << endl;
+	h3.out();
 }
